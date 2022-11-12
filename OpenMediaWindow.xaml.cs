@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -20,8 +20,13 @@ namespace VideoPlayerWPF
     public partial class OpenMediaWindow : Window
     {
         #region Fields
-        public Uri MediaUri { get; set; }
-        private Player _player;
+        Uri MediaUri { get; set; }
+        Player _player;
+        List<Uri> _sources = new List<Uri>();
+        #endregion
+
+        #region Events
+        readonly EventHandler _filesSelected;
         #endregion
 
         #region Constructors
@@ -34,13 +39,34 @@ namespace VideoPlayerWPF
         {
             InitializeComponent();
             _player = player;
+            _filesSelected += _player.GetPlayerReady;
         }
         #endregion
 
         #region Button click
         private void FileDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            _player.PlayVideoFromFile();
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Title = "Select videos for playback",
+                Multiselect = true,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonVideos),
+                CheckFileExists = true,
+                Filter = "Video Files|*.mp4;*.mpeg|All Files (*.*)|*.*",
+                AddExtension = true,
+                CheckPathExists = true,
+                DefaultExt = "mp4"
+            };
+
+            if(fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                foreach(string file in fileDialog.FileNames)
+                {
+                    _sources.Add(new Uri(file));
+                }
+                _player._sources = _sources;
+                _filesSelected.Invoke(this, null);
+            }
             Close();
         }
 
@@ -52,7 +78,7 @@ namespace VideoPlayerWPF
                 {
                     MediaUri = new Uri(UrlBox.Text);
                     Close();
-                    _player.PlayVideoFromUri(MediaUri);
+                    _player.Source = MediaUri;
                 }
                 catch (UriFormatException)
                 {
