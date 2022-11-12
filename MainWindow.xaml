@@ -1,0 +1,40 @@
+﻿<Window x:Class="VideoPlayerWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VideoPlayerWPF.Controls"
+        mc:Ignorable="d"
+        Title="Player"
+        Height="537" Width="642"
+        Background="#FF202020"
+        MinHeight="537" MinWidth="642">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="0.14*"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="grid">
+            <Viewbox x:Name="viewbox" Grid.Row="0" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}">
+                <Rectangle x:Name="VideoRect" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}"/>
+            </Viewbox>
+        </Grid>
+        <Grid x:Name="BottomPanel" Grid.Row="1" Background="#FF1C1C1C">
+            <Border BorderBrush="Black" BorderThickness="0,0.5,0,0"/>
+            <Viewbox>
+                <local:VPButton x:Name="PlayButton" Content="VPButton" Style="{StaticResource ResourceKey=PlayButtonStyle}" Margin="400,14,374,14" MinWidth="18" MinHeight="26" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" HorizontalAlignment="Center" VerticalAlignment="Center" Click="PlayButton_Click" ToolTip="Play media"/>
+            </Viewbox>
+            <Viewbox>
+                <local:VPButton x:Name="PauseButton" Content="VPButton" Style="{StaticResource ResourceKey=PauseButtonStyle}" Margin="400,8,374,14" MinWidth="18" MinHeight="32" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Click="PauseButton_Click" ToolTip="Pause media"/>
+            </Viewbox>
+            <Viewbox>
+                <local:VPButton x:Name="PreviousButton" Content="VPButton" Style="{StaticResource ResourceKey=PreviousNextButtonStyle}" Margin="400,9,497,14" MinWidth="18" MinHeight="32" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Center" VerticalAlignment="Center" Click="PreviousButton_Click" ToolTip="Play previous media" IsEnabled="False"/>
+            </Viewbox>
+            <Viewbox>
+                <local:VPButton x:Name="NextButton" Content="VPButton" Style="{StaticResource ResourceKey=PreviousNextButtonStyle}" Margin="497,-7,417,14" MinWidth="18" MinHeight="32" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransform="{StaticResource Rotate180}" Click="NextButton_Click" ToolTip="Play next media" IsEnabled="False"/>
+            </Viewbox>
+            <Viewbox>
+                <TextBlock x:Name="MediaOpenBlock" TextWrapping="NoWrap" Text="Open media" Foreground="{DynamicResource Button.Static.Foreground}" Margin="5,12,800,12" MouseLeftButtonDown="MediaOpenBlock_MouseLeftButtonDown"/>
+            </Viewbox>
+        </Grid>
+    </Grid></Window>
