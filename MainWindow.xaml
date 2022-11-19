@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <Grid x:Name="grid">
             <Viewbox x:Name="viewbox" Grid.Row="0" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}">
-                <Rectangle x:Name="VideoRect" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}"/>
+                <local:Player x:Name="_player" Initialized="_player_Initialized" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}" Foreground="{x:Null}" Balance="0.5" Volume="0.5" />
             </Viewbox>
         </Grid>
         <Grid x:Name="BottomPanel" Grid.Row="1" Background="#FF1C1C1C">

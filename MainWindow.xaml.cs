@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace VideoPlayerWPF
 {
@@ -20,10 +9,6 @@ namespace VideoPlayerWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        #region Fields
-        private Player _player;
-        #endregion
-
         #region Constructor
         public MainWindow()
         {
@@ -31,12 +16,15 @@ namespace VideoPlayerWPF
         }
         #endregion
 
-        #region Button click
+        #region Buttons clicks
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            PlayButton.Visibility = Visibility.Collapsed;
-            PauseButton.Visibility = Visibility.Visible;
-            _player.Play();
+            if (_player.Source != null)
+            {
+                PlayButton.Visibility = Visibility.Collapsed;
+                PauseButton.Visibility = Visibility.Visible;
+                _player.Play();
+            }
         }
 
         private void PauseButton_Click(object sender, RoutedEventArgs e)
@@ -58,10 +46,26 @@ namespace VideoPlayerWPF
 
         private void MediaOpenBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _player = new Player(this);
             OpenMediaWindow openMediaWindow = new OpenMediaWindow(_player);
             openMediaWindow.Show();
         }
         #endregion
+
+        #region Player
+        //private void AddPlayerToViewBox()
+        //{
+        //    _player.Width = viewbox.ActualWidth;
+        //    _player.Height = viewbox.ActualHeight;
+        //    viewbox.Child = _player;
+        //    _player.InvalidateMeasure();
+        //    _player.InvalidateArrange();
+        //    _player.InvalidateVisual();
+        //}
+        #endregion
+
+        private void _player_Initialized(object sender, EventArgs e)
+        {
+            _player.HookEvents();
+        }
     }
 }

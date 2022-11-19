@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using VideoPlayerWPF.Controls;
 
 namespace VideoPlayerWPF
 {
@@ -22,11 +15,10 @@ namespace VideoPlayerWPF
         #region Fields
         Uri MediaUri { get; set; }
         Player _player;
-        List<Uri> _sources = new List<Uri>();
         #endregion
 
         #region Events
-        readonly EventHandler _filesSelected;
+        readonly EventHandler<RoutedEventArgs> _filesSelected;
         #endregion
 
         #region Constructors
@@ -39,17 +31,17 @@ namespace VideoPlayerWPF
         {
             InitializeComponent();
             _player = player;
-            _filesSelected += _player.GetPlayerReady;
+            _filesSelected += _player.OpenMedia;
         }
         #endregion
 
-        #region Button click
+        #region Buttons clicks
         private void FileDialogButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog
             {
                 Title = "Select videos for playback",
-                Multiselect = true,
+                Multiselect = false,
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonVideos),
                 CheckFileExists = true,
                 Filter = "Video Files|*.mp4;*.mpeg|All Files (*.*)|*.*",
@@ -60,11 +52,11 @@ namespace VideoPlayerWPF
 
             if(fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                foreach(string file in fileDialog.FileNames)
+                foreach(string path in fileDialog.FileNames)
                 {
-                    _sources.Add(new Uri(file));
+                    _player.SourceController.Sources.Add(new Uri(path));
                 }
-                _player._sources = _sources;
+                _player.Source = _player.SourceController.GetSource();
                 _filesSelected.Invoke(this, null);
             }
             Close();
