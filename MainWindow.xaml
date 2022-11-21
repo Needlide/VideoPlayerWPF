@@ -17,12 +17,12 @@
         </Grid.RowDefinitions>
         <Grid x:Name="grid" Grid.Row="0">
             <Viewbox x:Name="viewbox" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}">
-                <local:Player x:Name="_player" Initialized="_player_Initialized" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}" Balance="0.5" Volume="0.5" Foreground="{x:Null}" />
+                <local:Player x:Name="_player" Initialized="_player_Initialized" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}" Balance="0.5" Volume="0.5" Foreground="{x:Null}" SnapsToDevicePixels="True" />
             </Viewbox>
         </Grid>
         <Grid x:Name="sliderGrid" Grid.Row="1">
             <Viewbox x:Name="sliderViewbox">
-                <local:VPSlider x:Name="durationSlider" Width="{Binding ActualWidth, ElementName=sliderGrid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=sliderGrid, Mode=OneWay}" Style="{StaticResource SliderStyle}" Maximum="{Binding Maximum, ElementName=_player}" Value="{Binding Position, ElementName=_player}" Thumb.DragCompleted="durationSlider_DragCompleted" LargeChange="0.1" SmallChange="0.01"/>
+                <local:VPSlider x:Name="durationSlider" Width="{Binding ActualWidth, ElementName=sliderGrid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=sliderGrid, Mode=OneWay}" Style="{StaticResource SliderStyle}" Maximum="{Binding Maximum, ElementName=_player}" Value="{Binding Position, ElementName=_player}" Thumb.DragCompleted="durationSlider_DragCompleted" LargeChange="0.1" TickFrequency="0.1"/>
             </Viewbox>
         </Grid>
         <Grid x:Name="bottomPanel" Grid.Row="2" Background="#FF1C1C1C">

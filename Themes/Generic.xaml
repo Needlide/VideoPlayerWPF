@@ -9,7 +9,7 @@
     <StreamGeometry x:Key="GeometryPlay">M 17,14 1,4 1,24 Z</StreamGeometry>
     <StreamGeometry x:Key="GeometryPause">M 0.5,9.8 5,9.8, 5,30.5, 0.5,30.5 Z M 9,9.8 13.5,9.8 13.5,30.5 9,30.5 Z</StreamGeometry>
     <StreamGeometry x:Key="GeometryPreviousNext">M 1.3,9.8 5,9.8, 5,30.5 1.3,30.5 Z M 5.4,20.16 13,10.75 13,29.6 Z</StreamGeometry>
-    <EllipseGeometry x:Key="GeometryThumb" Center="10,5" RadiusX="10" RadiusY="10"/>
+    <EllipseGeometry x:Key="GeometryThumb" Center="1,5" RadiusX="6" RadiusY="6"/>
     <Style x:Key="FocusVisualPlayButton">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -68,7 +68,7 @@
     <SolidColorBrush x:Key="Button.Pressed.Foreground" Color="#FFBFBFBF"/>
     <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF292929"/>
     <SolidColorBrush x:Key="Thumb.Static.Background" Color="#FF808080"/>
-    <SolidColorBrush x:Key="Thumb.MouseOver.Background" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key="Thumb.MouseOver.Background" Color="#FF999999"/>
     <SolidColorBrush x:Key="Thumb.Border" Color="Transparent"/>
     <SolidColorBrush x:Key="Slider.Static.Background" Color="#FF292929"/>
     <SolidColorBrush x:Key="Slider.Border" Color="Transparent"/>
@@ -234,7 +234,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Border Name="SliderBorder" BorderBrush="Transparent" BorderThickness="1" CornerRadius="3" Grid.Row="1" Grid.Column="1" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-                        <Track Name="PART_Track" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                        <Track Name="PART_Track" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" ClipToBounds="True">
                             <Track.DecreaseRepeatButton>
                                 <RepeatButton Style="{StaticResource DecreaseSliderButtonStyle}"/>
                             </Track.DecreaseRepeatButton>

@@ -72,9 +72,8 @@ namespace VideoPlayerWPF.Controls
             DrawingBrush drawingBrush = new DrawingBrush
             {
                 Drawing = videoDrawing,
-                Stretch = Stretch.Fill,
                 Viewbox = new Rect(0, 0, 1, 1),
-                Viewport = new Rect(0, 0, 1, 1)
+                Viewport = new Rect(0, 0, 1, 1),
             };
             Background = drawingBrush;
 
