@@ -15,20 +15,28 @@ namespace VideoPlayerWPF.Controls
         internal static readonly DependencyProperty _isMutedProperty = DependencyProperty.RegisterAttached("IsMuted", typeof(bool), typeof(Player));
         internal static readonly DependencyProperty _loadedBehaviorProperty = DependencyProperty.RegisterAttached("LoadedBehaviorProperty", typeof(MediaState), typeof(Player));
         internal static readonly DependencyProperty _unloadedBehaviorProperty = DependencyProperty.RegisterAttached("UnloadedBehaviorProperty", typeof(MediaState), typeof(Player));
+        internal static readonly DependencyProperty _position = DependencyProperty.RegisterAttached("Position", typeof(double), typeof(Player));
+        internal static readonly DependencyProperty _maximum = DependencyProperty.RegisterAttached("Maximum", typeof(double), typeof(Player));
         #endregion
 
         #region Properties
-        public Uri Source { get => (Uri)GetValue(_sourceProperty); set => SetValue(_sourceProperty, value); }
-        public double Volume { get => (double)GetValue(_volumeProperty); set => SetValue(_volumeProperty, value); }
-        public double Balance { get => (double)GetValue(_balanceProperty); set => SetValue(_balanceProperty, value); }
-        public bool IsMuted { get => (bool)GetValue(_isMutedProperty); set => SetValue(_isMutedProperty, value); }
-        public MediaState LoadedBehavior { get => (MediaState)GetValue(_loadedBehaviorProperty); set => SetValue(_loadedBehaviorProperty, value); }
-        public MediaState UnloadedBehavior { get => (MediaState)GetValue(_unloadedBehaviorProperty); set => SetValue(_unloadedBehaviorProperty, value); }
+        internal Uri Source { get => (Uri)GetValue(_sourceProperty); set => SetValue(_sourceProperty, value); }
+        internal double Volume { get => (double)GetValue(_volumeProperty); set => SetValue(_volumeProperty, value); }
+        internal double Balance { get => (double)GetValue(_balanceProperty); set => SetValue(_balanceProperty, value); }
+        internal double Position { get => (double)GetValue(_position); set => SetValue(_position, value); }
+        internal double Maximum { get => (double)GetValue(_maximum); set => SetValue(_maximum, _mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds); }
+        internal bool IsMuted { get => (bool)GetValue(_isMutedProperty); set => SetValue(_isMutedProperty, value); }
+        internal MediaState LoadedBehavior { get => (MediaState)GetValue(_loadedBehaviorProperty); set => SetValue(_loadedBehaviorProperty, value); }
+        internal MediaState UnloadedBehavior { get => (MediaState)GetValue(_unloadedBehaviorProperty); set => SetValue(_unloadedBehaviorProperty, value); }
+        #endregion
+
+        #region Events
+        internal delegate void PlayerReadyHandler();
+        internal event PlayerReadyHandler PlayerReady;
         #endregion
 
         #region Fields
-        readonly MediaPlayer _mediaPlayer = new MediaPlayer();
-        internal List<Uri> _sources = new List<Uri>();
+        internal readonly MediaPlayer _mediaPlayer = new MediaPlayer();
         #endregion
 
         #region Methods
@@ -40,11 +48,6 @@ namespace VideoPlayerWPF.Controls
         internal void Pause()
         { 
             _mediaPlayer.Pause(); 
-        }
-
-        internal void Close()
-        { 
-            _mediaPlayer.Close(); 
         }
 
         internal void HookEvents()
@@ -74,6 +77,8 @@ namespace VideoPlayerWPF.Controls
                 Viewport = new Rect(0, 0, 1, 1)
             };
             Background = drawingBrush;
+
+            PlayerReady?.Invoke();
         }
 
         internal void PlayNext(object sender, EventArgs e)
@@ -86,6 +91,16 @@ namespace VideoPlayerWPF.Controls
         {
             SourceController.MovePrevious();
             Source = SourceController.GetSource();
+        }
+
+        internal Duration GetDuration()
+        {
+            return _mediaPlayer.NaturalDuration;
+        }
+
+        internal double GetPosition()
+        {
+            return _mediaPlayer.Position.TotalSeconds;
         }
 
         protected override void OnRender(DrawingContext drawingContext)

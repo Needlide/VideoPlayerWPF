@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using VideoPlayerWPF.Controls;
@@ -71,6 +69,7 @@ namespace VideoPlayerWPF
                     MediaUri = new Uri(UrlBox.Text);
                     Close();
                     _player.Source = MediaUri;
+                    _filesSelected.Invoke(this, null);
                 }
                 catch (UriFormatException)
                 {

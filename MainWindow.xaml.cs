@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace VideoPlayerWPF
 {
@@ -13,6 +15,7 @@ namespace VideoPlayerWPF
         public MainWindow()
         {
             InitializeComponent();
+            _player.PlayerReady += CreateDispatcherTimer;
         }
         #endregion
 
@@ -51,21 +54,33 @@ namespace VideoPlayerWPF
         }
         #endregion
 
+        #region Timer
+        private void CreateDispatcherTimer()
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Tick += SetSliderParameters;
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Start();
+        }
+        #endregion
+
         #region Player
-        //private void AddPlayerToViewBox()
-        //{
-        //    _player.Width = viewbox.ActualWidth;
-        //    _player.Height = viewbox.ActualHeight;
-        //    viewbox.Child = _player;
-        //    _player.InvalidateMeasure();
-        //    _player.InvalidateArrange();
-        //    _player.InvalidateVisual();
-        //}
+        private void SetSliderParameters(object sender, EventArgs e)
+        {
+            durationSlider.Minimum = 0;
+            durationSlider.Maximum = _player.GetDuration().TimeSpan.TotalSeconds;
+            durationSlider.Value = _player.GetPosition();
+        }
         #endregion
 
         private void _player_Initialized(object sender, EventArgs e)
         {
             _player.HookEvents();
+        }
+
+        private void durationSlider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            _player._mediaPlayer.Position = TimeSpan.FromSeconds(durationSlider.Value);
         }
     }
 }

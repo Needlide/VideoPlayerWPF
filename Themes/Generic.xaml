@@ -3,9 +3,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:VideoPlayerWPF.Controls">
 
+    <RotateTransform x:Key="Rotate090" CenterX="24" CenterY="24" Angle="090"/>
+    <RotateTransform x:Key="Rotate180" CenterX="24" CenterY="24" Angle="180"/>
+    <RotateTransform x:Key="Rotate270" CenterX="24" CenterY="24" Angle="270"/>
     <StreamGeometry x:Key="GeometryPlay">M 17,14 1,4 1,24 Z</StreamGeometry>
     <StreamGeometry x:Key="GeometryPause">M 0.5,9.8 5,9.8, 5,30.5, 0.5,30.5 Z M 9,9.8 13.5,9.8 13.5,30.5 9,30.5 Z</StreamGeometry>
     <StreamGeometry x:Key="GeometryPreviousNext">M 1.3,9.8 5,9.8, 5,30.5 1.3,30.5 Z M 5.4,20.16 13,10.75 13,29.6 Z</StreamGeometry>
+    <EllipseGeometry x:Key="GeometryThumb" Center="10,5" RadiusX="10" RadiusY="10"/>
     <Style x:Key="FocusVisualPlayButton">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -42,6 +46,15 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="FocusVisualThumb">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Path Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2" Width="48"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <SolidColorBrush x:Key="Button.Static.Background" Color="#FF1C1C1C"/>
     <SolidColorBrush x:Key="Button.Static.Border" Color="#FF808080"/>
     <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FF1C1C1C"/>
@@ -54,6 +67,12 @@
     <SolidColorBrush x:Key="Button.MouseOver.Foreground" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="Button.Pressed.Foreground" Color="#FFBFBFBF"/>
     <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF292929"/>
+    <SolidColorBrush x:Key="Thumb.Static.Background" Color="#FF808080"/>
+    <SolidColorBrush x:Key="Thumb.MouseOver.Background" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key="Thumb.Border" Color="Transparent"/>
+    <SolidColorBrush x:Key="Slider.Static.Background" Color="#FF292929"/>
+    <SolidColorBrush x:Key="Slider.Border" Color="Transparent"/>
+    <SolidColorBrush x:Key="Slider.MouseOver.Background" Color="White"/>
     <Style x:Key="PlayButtonStyle" TargetType="{x:Type local:VPButton}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisualPlayButton}"/>
         <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
@@ -164,8 +183,82 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <RotateTransform x:Key="Rotate090" CenterX="24" CenterY="24" Angle="090"/>
-    <RotateTransform x:Key="Rotate180" CenterX="24" CenterY="24" Angle="180"/>
-    <RotateTransform x:Key="Rotate270" CenterX="24" CenterY="24" Angle="270"/>
+    <Style x:Key="ThumbStyle" TargetType="{x:Type Thumb}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Background" Value="{StaticResource Thumb.Static.Background}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Thumb.Border}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Canvas>
+                        <Path Name="Border" Stroke="{TemplateBinding BorderBrush}" Fill="{TemplateBinding Background}" Data="{StaticResource GeometryThumb}" Width="48"/>
+                    </Canvas>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource Thumb.MouseOver.Background}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="DecreaseSliderButtonStyle" TargetType="{x:Type RepeatButton}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Border Background="WhiteSmoke"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SliderStyle" TargetType="{x:Type local:VPSlider}">
+        <Setter Property="Background" Value="{StaticResource Slider.Static.Background}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Slider.Border}"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:VPSlider}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Name="MiddleRow" Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Name="CentralColumn" Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
+                        <Border Name="SliderBorder" BorderBrush="Transparent" BorderThickness="1" CornerRadius="3" Grid.Row="1" Grid.Column="1" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                        <Track Name="PART_Track" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Style="{StaticResource DecreaseSliderButtonStyle}"/>
+                            </Track.DecreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb Name="TrackThumb" Style="{StaticResource ThumbStyle}" Visibility="Hidden" Opacity="1"/>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Orientation" Value="Vertical">
+                            <Setter TargetName="SliderBorder" Property="HorizontalAlignment" Value="Center"/>
+                            <Setter TargetName="SliderBorder" Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter TargetName="PART_Track" Property="HorizontalAlignment" Value="Center"/>
+                            <Setter TargetName="PART_Track" Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter TargetName="MiddleRow" Property="Height" Value="*"/>
+                            <Setter TargetName="CentralColumn" Property="Width" Value="Auto"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource Slider.MouseOver.Background}"/>
+                            <Setter TargetName="TrackThumb" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
