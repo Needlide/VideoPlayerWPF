@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -9,23 +8,25 @@ namespace VideoPlayerWPF.Controls
     internal class Player : Control
     {
         #region Dependency properties
-        internal static readonly DependencyProperty _sourceProperty = DependencyProperty.RegisterAttached("Source", typeof(Uri), typeof(Player));
-        internal static readonly DependencyProperty _volumeProperty = DependencyProperty.RegisterAttached("Volume", typeof(double), typeof(Player));
-        internal static readonly DependencyProperty _balanceProperty = DependencyProperty.RegisterAttached("Balance", typeof(double), typeof(Player));
-        internal static readonly DependencyProperty _isMutedProperty = DependencyProperty.RegisterAttached("IsMuted", typeof(bool), typeof(Player));
-        internal static readonly DependencyProperty _loadedBehaviorProperty = DependencyProperty.RegisterAttached("LoadedBehaviorProperty", typeof(MediaState), typeof(Player));
-        internal static readonly DependencyProperty _unloadedBehaviorProperty = DependencyProperty.RegisterAttached("UnloadedBehaviorProperty", typeof(MediaState), typeof(Player));
-        internal static readonly DependencyProperty _position = DependencyProperty.RegisterAttached("Position", typeof(double), typeof(Player));
-        internal static readonly DependencyProperty _maximum = DependencyProperty.RegisterAttached("Maximum", typeof(double), typeof(Player));
+        static readonly DependencyProperty _sourceProperty = DependencyProperty.RegisterAttached("Source", typeof(Uri), typeof(Player));
+        static readonly DependencyProperty _volumeProperty = DependencyProperty.RegisterAttached("Volume", typeof(double), typeof(Player));
+        static readonly DependencyProperty _balanceProperty = DependencyProperty.RegisterAttached("Balance", typeof(double), typeof(Player));
+        //static readonly DependencyProperty _isMutedProperty = DependencyProperty.RegisterAttached("IsMuted", typeof(bool), typeof(Player));
+        static readonly DependencyProperty _isPlayingProperty = DependencyProperty.RegisterAttached("IsPlaying", typeof(bool), typeof(Player));
+        static readonly DependencyProperty _loadedBehaviorProperty = DependencyProperty.RegisterAttached("LoadedBehaviorProperty", typeof(MediaState), typeof(Player));
+        static readonly DependencyProperty _unloadedBehaviorProperty = DependencyProperty.RegisterAttached("UnloadedBehaviorProperty", typeof(MediaState), typeof(Player));
+        static readonly DependencyProperty _positionProperty = DependencyProperty.RegisterAttached("Position", typeof(double), typeof(Player));
+        static readonly DependencyProperty _maximumProperty = DependencyProperty.RegisterAttached("Maximum", typeof(double), typeof(Player));
         #endregion
 
         #region Properties
         internal Uri Source { get => (Uri)GetValue(_sourceProperty); set => SetValue(_sourceProperty, value); }
         internal double Volume { get => (double)GetValue(_volumeProperty); set => SetValue(_volumeProperty, value); }
         internal double Balance { get => (double)GetValue(_balanceProperty); set => SetValue(_balanceProperty, value); }
-        internal double Position { get => (double)GetValue(_position); set => SetValue(_position, value); }
-        internal double Maximum { get => (double)GetValue(_maximum); set => SetValue(_maximum, _mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds); }
-        internal bool IsMuted { get => (bool)GetValue(_isMutedProperty); set => SetValue(_isMutedProperty, value); }
+        internal double Position { get => (double)GetValue(_positionProperty); set => SetValue(_positionProperty, value); }
+        internal double Maximum { get => (double)GetValue(_maximumProperty); set => SetValue(_maximumProperty, _mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds); }
+        //internal bool IsMuted { get => (bool)GetValue(_isMutedProperty); set => SetValue(_isMutedProperty, value); }
+        internal bool IsPlaying { get => (bool)GetValue(_isPlayingProperty); set => SetValue(_isPlayingProperty, value); }
         internal MediaState LoadedBehavior { get => (MediaState)GetValue(_loadedBehaviorProperty); set => SetValue(_loadedBehaviorProperty, value); }
         internal MediaState UnloadedBehavior { get => (MediaState)GetValue(_unloadedBehaviorProperty); set => SetValue(_unloadedBehaviorProperty, value); }
         #endregion
@@ -41,12 +42,14 @@ namespace VideoPlayerWPF.Controls
 
         #region Methods
         internal void Play()
-        { 
+        {
+            IsPlaying = true;
             _mediaPlayer.Play(); 
         }
 
         internal void Pause()
-        { 
+        {
+            IsPlaying = false;
             _mediaPlayer.Pause(); 
         }
 
@@ -58,6 +61,7 @@ namespace VideoPlayerWPF.Controls
 
         internal void OpenMedia(object sender, RoutedEventArgs e)
         {
+            //needs try/catch
             _mediaPlayer.Open(Source);
         }
 

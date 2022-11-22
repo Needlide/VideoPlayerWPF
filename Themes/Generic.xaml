@@ -216,7 +216,6 @@
     </Style>
     <Style x:Key="SliderStyle" TargetType="{x:Type local:VPSlider}">
         <Setter Property="Background" Value="{StaticResource Slider.Static.Background}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Slider.Border}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>

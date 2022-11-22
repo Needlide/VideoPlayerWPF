@@ -59,17 +59,18 @@ namespace VideoPlayerWPF
         {
             DispatcherTimer timer = new DispatcherTimer();
             timer.Tick += SetSliderParameters;
-            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Interval = TimeSpan.FromMilliseconds(10);
             timer.Start();
         }
         #endregion
 
-        #region Player
+        #region Slider
         private void SetSliderParameters(object sender, EventArgs e)
         {
             durationSlider.Minimum = 0;
             durationSlider.Maximum = _player.GetDuration().TimeSpan.TotalSeconds;
             durationSlider.Value = _player.GetPosition();
+            durationSlider.UpdateLayout();
         }
         #endregion
 
@@ -81,6 +82,32 @@ namespace VideoPlayerWPF
         private void durationSlider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             _player._mediaPlayer.Position = TimeSpan.FromSeconds(durationSlider.Value);
+        }
+
+        private void durationSlider_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            _player._mediaPlayer.Position += (e.Delta > 0) ? TimeSpan.FromSeconds(0.1) : TimeSpan.FromSeconds(-0.1);
+        }
+
+        private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            _player._mediaPlayer.Volume += (e.Delta > 0) ? 0.1 : -0.1;
+        }
+
+        private void grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!_player.IsPlaying)
+                _player.Play();
+            else
+                _player.Pause();
+        }
+
+        private void grid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_player._mediaPlayer.IsMuted)
+                _player._mediaPlayer.IsMuted = false;
+            else
+                _player._mediaPlayer.IsMuted = true;
         }
     }
 }
