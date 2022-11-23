@@ -97,9 +97,17 @@ namespace VideoPlayerWPF
         private void grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (!_player.IsPlaying)
+            {
                 _player.Play();
+                PlayButton.Visibility = Visibility.Collapsed;
+                PauseButton.Visibility = Visibility.Visible;
+            }
             else
+            {
                 _player.Pause();
+                PauseButton.Visibility = Visibility.Collapsed;
+                PlayButton.Visibility = Visibility.Visible;
+            }
         }
 
         private void grid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
