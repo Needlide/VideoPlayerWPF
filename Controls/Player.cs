@@ -11,7 +11,6 @@ namespace VideoPlayerWPF.Controls
         static readonly DependencyProperty _sourceProperty = DependencyProperty.RegisterAttached("Source", typeof(Uri), typeof(Player));
         static readonly DependencyProperty _volumeProperty = DependencyProperty.RegisterAttached("Volume", typeof(double), typeof(Player));
         static readonly DependencyProperty _balanceProperty = DependencyProperty.RegisterAttached("Balance", typeof(double), typeof(Player));
-        //static readonly DependencyProperty _isMutedProperty = DependencyProperty.RegisterAttached("IsMuted", typeof(bool), typeof(Player));
         static readonly DependencyProperty _isPlayingProperty = DependencyProperty.RegisterAttached("IsPlaying", typeof(bool), typeof(Player));
         static readonly DependencyProperty _loadedBehaviorProperty = DependencyProperty.RegisterAttached("LoadedBehaviorProperty", typeof(MediaState), typeof(Player));
         static readonly DependencyProperty _unloadedBehaviorProperty = DependencyProperty.RegisterAttached("UnloadedBehaviorProperty", typeof(MediaState), typeof(Player));
@@ -25,7 +24,6 @@ namespace VideoPlayerWPF.Controls
         internal double Balance { get => (double)GetValue(_balanceProperty); set => SetValue(_balanceProperty, value); }
         internal double Position { get => (double)GetValue(_positionProperty); set => SetValue(_positionProperty, value); }
         internal double Maximum { get => (double)GetValue(_maximumProperty); set => SetValue(_maximumProperty, _mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds); }
-        //internal bool IsMuted { get => (bool)GetValue(_isMutedProperty); set => SetValue(_isMutedProperty, value); }
         internal bool IsPlaying { get => (bool)GetValue(_isPlayingProperty); set => SetValue(_isPlayingProperty, value); }
         internal MediaState LoadedBehavior { get => (MediaState)GetValue(_loadedBehaviorProperty); set => SetValue(_loadedBehaviorProperty, value); }
         internal MediaState UnloadedBehavior { get => (MediaState)GetValue(_unloadedBehaviorProperty); set => SetValue(_unloadedBehaviorProperty, value); }
@@ -33,7 +31,11 @@ namespace VideoPlayerWPF.Controls
 
         #region Events
         internal delegate void PlayerReadyHandler();
+        delegate void PlayNextRequested(object sender, RoutedEventArgs e);
+        delegate void PlayPreviousRequested(object sender, RoutedEventArgs e);
         internal event PlayerReadyHandler PlayerReady;
+        event PlayNextRequested _playNextEvent;
+        event PlayPreviousRequested _playPreviousEvent;
         #endregion
 
         #region Fields
@@ -57,12 +59,21 @@ namespace VideoPlayerWPF.Controls
         {
             _mediaPlayer.MediaEnded += PlayNext;
             _mediaPlayer.MediaOpened += GetPlayerReady;
+            _playNextEvent += OpenMedia;
+            _playPreviousEvent += OpenMedia;
         }
 
         internal void OpenMedia(object sender, RoutedEventArgs e)
         {
-            //needs try/catch
-            _mediaPlayer.Open(Source);
+            try
+            {
+                _mediaPlayer.Close();
+                _mediaPlayer.Open(Source);
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("Link is not supported", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         internal void GetPlayerReady(object sender, EventArgs e)
@@ -88,12 +99,14 @@ namespace VideoPlayerWPF.Controls
         {
             SourceController.MoveNext();
             Source = SourceController.GetSource();
+            _playNextEvent.Invoke(this, null);
         }
 
-        internal void PlayPrevious(object sender, EventArgs e)
+        internal void PlayPrevious()
         {
             SourceController.MovePrevious();
             Source = SourceController.GetSource();
+            _playPreviousEvent.Invoke(this, null);
         }
 
         internal Duration GetDuration()
@@ -113,7 +126,7 @@ namespace VideoPlayerWPF.Controls
         #endregion
 
         #region SourceController
-        public SourceController SourceController = new SourceController();
+        internal SourceController SourceController = new SourceController();
         #endregion
     }
 }

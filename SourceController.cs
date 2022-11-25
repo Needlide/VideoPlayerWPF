@@ -13,6 +13,7 @@ namespace VideoPlayerWPF
         #region Properties
         public List<Uri> Sources { get => _sources; set => _sources = value; }
         public int Position { get => _position; }
+        public int Count { get => _sources.Count; }
         #endregion
 
         #region Constructors

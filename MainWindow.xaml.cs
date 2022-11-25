@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -16,6 +15,7 @@ namespace VideoPlayerWPF
         {
             InitializeComponent();
             _player.PlayerReady += CreateDispatcherTimer;
+            OpenMediaWindow.FilesSelectedEvent += EnableNextButton;
         }
         #endregion
 
@@ -39,12 +39,28 @@ namespace VideoPlayerWPF
 
         private void PreviousButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (_player.SourceController.Position > 0)
+            {
+                _player.Pause();
+                PauseButton.Visibility = Visibility.Collapsed;
+                PlayButton.Visibility = Visibility.Visible;
+                PreviousButton.IsEnabled = false;
+                _player.PlayPrevious();
+                NextButton.IsEnabled = true;
+            }
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-
+            _player.Pause();
+            PauseButton.Visibility = Visibility.Collapsed;
+            PlayButton.Visibility = Visibility.Visible;
+            _player.PlayNext(this, null);
+            PreviousButton.IsEnabled = true;
+            if (_player.SourceController.Position == (_player.SourceController.Count - 1))
+            {
+                NextButton.IsEnabled = false;
+            }
         }
 
         private void MediaOpenBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -67,10 +83,12 @@ namespace VideoPlayerWPF
         #region Slider
         private void SetSliderParameters(object sender, EventArgs e)
         {
-            durationSlider.Minimum = 0;
-            durationSlider.Maximum = _player.GetDuration().TimeSpan.TotalSeconds;
-            durationSlider.Value = _player.GetPosition();
-            durationSlider.UpdateLayout();
+            if (_player.GetDuration().HasTimeSpan)
+            {
+                durationSlider.Minimum = 0;
+                durationSlider.Maximum = _player.GetDuration().TimeSpan.TotalSeconds;
+                durationSlider.Value = _player.GetPosition();
+            }
         }
         #endregion
 
@@ -116,6 +134,12 @@ namespace VideoPlayerWPF
                 _player._mediaPlayer.IsMuted = false;
             else
                 _player._mediaPlayer.IsMuted = true;
+        }
+
+        private void EnableNextButton()
+        {
+            if (_player.SourceController.Count > 1)
+                NextButton.IsEnabled = true;
         }
     }
 }

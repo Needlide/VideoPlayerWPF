@@ -17,6 +17,8 @@ namespace VideoPlayerWPF
 
         #region Events
         readonly EventHandler<RoutedEventArgs> _filesSelected;
+        internal delegate void FilesSelectedHandler();
+        internal static FilesSelectedHandler FilesSelectedEvent;
         #endregion
 
         #region Constructors
@@ -39,7 +41,7 @@ namespace VideoPlayerWPF
             OpenFileDialog fileDialog = new OpenFileDialog
             {
                 Title = "Select videos for playback",
-                Multiselect = false,
+                Multiselect = true,
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonVideos),
                 CheckFileExists = true,
                 Filter = "Video Files|*.mp4;*.mpeg|All Files (*.*)|*.*",
@@ -55,7 +57,8 @@ namespace VideoPlayerWPF
                     _player.SourceController.Sources.Add(new Uri(path));
                 }
                 _player.Source = _player.SourceController.GetSource();
-                _filesSelected.Invoke(this, null);
+                _filesSelected?.Invoke(this, null);
+                FilesSelectedEvent?.Invoke();
             }
             Close();
         }
