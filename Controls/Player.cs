@@ -9,24 +9,12 @@ namespace VideoPlayerWPF.Controls
     {
         #region Dependency properties
         static readonly DependencyProperty _sourceProperty = DependencyProperty.RegisterAttached("Source", typeof(Uri), typeof(Player));
-        static readonly DependencyProperty _volumeProperty = DependencyProperty.RegisterAttached("Volume", typeof(double), typeof(Player));
-        static readonly DependencyProperty _balanceProperty = DependencyProperty.RegisterAttached("Balance", typeof(double), typeof(Player));
         static readonly DependencyProperty _isPlayingProperty = DependencyProperty.RegisterAttached("IsPlaying", typeof(bool), typeof(Player));
-        static readonly DependencyProperty _loadedBehaviorProperty = DependencyProperty.RegisterAttached("LoadedBehaviorProperty", typeof(MediaState), typeof(Player));
-        static readonly DependencyProperty _unloadedBehaviorProperty = DependencyProperty.RegisterAttached("UnloadedBehaviorProperty", typeof(MediaState), typeof(Player));
-        static readonly DependencyProperty _positionProperty = DependencyProperty.RegisterAttached("Position", typeof(double), typeof(Player));
-        static readonly DependencyProperty _maximumProperty = DependencyProperty.RegisterAttached("Maximum", typeof(double), typeof(Player));
         #endregion
 
         #region Properties
         internal Uri Source { get => (Uri)GetValue(_sourceProperty); set => SetValue(_sourceProperty, value); }
-        internal double Volume { get => (double)GetValue(_volumeProperty); set => SetValue(_volumeProperty, value); }
-        internal double Balance { get => (double)GetValue(_balanceProperty); set => SetValue(_balanceProperty, value); }
-        internal double Position { get => (double)GetValue(_positionProperty); set => SetValue(_positionProperty, value); }
-        internal double Maximum { get => (double)GetValue(_maximumProperty); set => SetValue(_maximumProperty, _mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds); }
         internal bool IsPlaying { get => (bool)GetValue(_isPlayingProperty); set => SetValue(_isPlayingProperty, value); }
-        internal MediaState LoadedBehavior { get => (MediaState)GetValue(_loadedBehaviorProperty); set => SetValue(_loadedBehaviorProperty, value); }
-        internal MediaState UnloadedBehavior { get => (MediaState)GetValue(_unloadedBehaviorProperty); set => SetValue(_unloadedBehaviorProperty, value); }
         #endregion
 
         #region Events
