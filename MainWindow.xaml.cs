@@ -44,7 +44,8 @@ namespace VideoPlayerWPF
                 _player.Pause();
                 PauseButton.Visibility = Visibility.Collapsed;
                 PlayButton.Visibility = Visibility.Visible;
-                PreviousButton.IsEnabled = false;
+                if(_player.SourceController.Position == 1)
+                    PreviousButton.IsEnabled = false;
                 _player.PlayPrevious();
                 NextButton.IsEnabled = true;
             }
@@ -92,6 +93,7 @@ namespace VideoPlayerWPF
         }
         #endregion
 
+        #region Methods attached to actions
         private void _player_Initialized(object sender, EventArgs e)
         {
             _player.HookEvents();
@@ -135,6 +137,7 @@ namespace VideoPlayerWPF
             else
                 _player._mediaPlayer.IsMuted = true;
         }
+        #endregion
 
         private void EnableNextButton()
         {
