@@ -78,7 +78,6 @@ namespace VideoPlayerWPF
         #region Timer
         private void CreateDispatcherTimer()
         {
-            //timer = new DispatcherTimer();
             timer.Tick += SetSliderParameters;
             timer.Interval = TimeSpan.FromMilliseconds(10);
             timer.Start();
