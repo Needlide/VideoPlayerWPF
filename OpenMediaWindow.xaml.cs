@@ -72,7 +72,7 @@ namespace VideoPlayerWPF
                     MediaUri = new Uri(UrlBox.Text);
                     Close();
                     _player.Source = MediaUri;
-                    _filesSelected.Invoke(this, null);
+                    _filesSelected?.Invoke(this, null);
                 }
                 catch (UriFormatException)
                 {
