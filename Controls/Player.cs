@@ -87,14 +87,14 @@ namespace VideoPlayerWPF.Controls
         {
             SourceController.MoveNext();
             Source = SourceController.GetSource();
-            _playNextEvent.Invoke(this, null);
+            _playNextEvent?.Invoke(this, null);
         }
 
         internal void PlayPrevious()
         {
             SourceController.MovePrevious();
             Source = SourceController.GetSource();
-            _playPreviousEvent.Invoke(this, null);
+            _playPreviousEvent?.Invoke(this, null);
         }
 
         internal Duration GetDuration()
