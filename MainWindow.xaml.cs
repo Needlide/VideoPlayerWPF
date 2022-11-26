@@ -11,7 +11,7 @@ namespace VideoPlayerWPF
     public partial class MainWindow : Window
     {
         #region Fields
-        DispatcherTimer timer;
+        DispatcherTimer timer = new DispatcherTimer();
         #endregion
 
         #region Constructor
@@ -78,7 +78,7 @@ namespace VideoPlayerWPF
         #region Timer
         private void CreateDispatcherTimer()
         {
-            timer = new DispatcherTimer();
+            //timer = new DispatcherTimer();
             timer.Tick += SetSliderParameters;
             timer.Interval = TimeSpan.FromMilliseconds(10);
             timer.Start();
