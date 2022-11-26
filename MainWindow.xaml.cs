@@ -10,6 +10,10 @@ namespace VideoPlayerWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Fields
+        DispatcherTimer timer;
+        #endregion
+
         #region Constructor
         public MainWindow()
         {
@@ -74,10 +78,12 @@ namespace VideoPlayerWPF
         #region Timer
         private void CreateDispatcherTimer()
         {
-            DispatcherTimer timer = new DispatcherTimer();
+            timer = new DispatcherTimer();
             timer.Tick += SetSliderParameters;
             timer.Interval = TimeSpan.FromMilliseconds(10);
             timer.Start();
+            PauseButton.Visibility = Visibility.Collapsed;
+            PlayButton.Visibility = Visibility.Visible;
         }
         #endregion
 
@@ -99,14 +105,15 @@ namespace VideoPlayerWPF
             _player.HookEvents();
         }
 
+        private void durationSlider_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        {
+            timer.Stop();
+        }
+
         private void durationSlider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             _player._mediaPlayer.Position = TimeSpan.FromSeconds(durationSlider.Value);
-        }
-
-        private void durationSlider_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            _player._mediaPlayer.Position += (e.Delta > 0) ? TimeSpan.FromSeconds(0.1) : TimeSpan.FromSeconds(-0.1);
+            timer.Start();
         }
 
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -137,6 +144,7 @@ namespace VideoPlayerWPF
             else
                 _player._mediaPlayer.IsMuted = true;
         }
+
         #endregion
 
         private void EnableNextButton()

@@ -22,7 +22,7 @@
         </Grid>
         <Grid x:Name="sliderGrid" Grid.Row="1">
             <Viewbox x:Name="sliderViewbox">
-                <local:VPSlider x:Name="durationSlider" Width="{Binding ActualWidth, ElementName=sliderGrid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=sliderGrid, Mode=OneWay}" Style="{StaticResource SliderStyle}" Thumb.DragCompleted="durationSlider_DragCompleted" LargeChange="0.1" TickFrequency="0.1" MouseWheel="durationSlider_MouseWheel"/>
+                <local:VPSlider x:Name="durationSlider" Width="{Binding ActualWidth, ElementName=sliderGrid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=sliderGrid, Mode=OneWay}" Style="{StaticResource SliderStyle}" Thumb.DragStarted="durationSlider_DragStarted" Thumb.DragCompleted="durationSlider_DragCompleted" LargeChange="0.1" TickFrequency="0.1"/>
             </Viewbox>
         </Grid>
         <Grid x:Name="bottomPanel" Grid.Row="2" Background="#FF1C1C1C" MouseWheel="Grid_MouseWheel" MouseRightButtonDown="grid_MouseRightButtonDown">
