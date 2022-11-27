@@ -1,5 +1,17 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace VideoPlayerWPF.Controls
 {
@@ -29,14 +41,14 @@ namespace VideoPlayerWPF.Controls
     /// Step 2)
     /// Go ahead and use your control in the XAML file.
     ///
-    ///     <MyNamespace:VPButton/>
+    ///     <MyNamespace:VPSlider/>
     ///
     /// </summary>
-    public class VPButton : Button
+    public class VPSlider : Slider
     {
-        static VPButton()
+        static VPSlider()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(VPButton), new FrameworkPropertyMetadata(typeof(VPButton)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(VPSlider), new FrameworkPropertyMetadata(typeof(VPSlider)));
         }
     }
 }

@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Forms;
+using VideoPlayerWPF.Controls;
 
 namespace VideoPlayerWPF
 {
@@ -20,8 +11,14 @@ namespace VideoPlayerWPF
     public partial class OpenMediaWindow : Window
     {
         #region Fields
-        public Uri MediaUri { get; set; }
-        private Player _player;
+        Uri MediaUri { get; set; }
+        Player _player;
+        #endregion
+
+        #region Events
+        readonly EventHandler<RoutedEventArgs> _filesSelected;
+        internal delegate void FilesSelectedHandler();
+        internal static FilesSelectedHandler FilesSelectedEvent;
         #endregion
 
         #region Constructors
@@ -34,13 +31,35 @@ namespace VideoPlayerWPF
         {
             InitializeComponent();
             _player = player;
+            _filesSelected += _player.OpenMedia;
         }
         #endregion
 
-        #region Button click
+        #region Buttons clicks
         private void FileDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            _player.PlayVideoFromFile();
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Title = "Select videos for playback",
+                Multiselect = true,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonVideos),
+                CheckFileExists = true,
+                Filter = "Video Files|*.mp4;*.mpeg|All Files (*.*)|*.*",
+                AddExtension = true,
+                CheckPathExists = true,
+                DefaultExt = "mp4"
+            };
+
+            if(fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                foreach(string path in fileDialog.FileNames)
+                {
+                    _player.SourceController.Sources.Add(new Uri(path));
+                }
+                _player.Source = _player.SourceController.GetSource();
+                _filesSelected?.Invoke(this, null);
+                FilesSelectedEvent?.Invoke();
+            }
             Close();
         }
 
@@ -52,7 +71,8 @@ namespace VideoPlayerWPF
                 {
                     MediaUri = new Uri(UrlBox.Text);
                     Close();
-                    _player.PlayVideoFromUri(MediaUri);
+                    _player.Source = MediaUri;
+                    _filesSelected?.Invoke(this, null);
                 }
                 catch (UriFormatException)
                 {
