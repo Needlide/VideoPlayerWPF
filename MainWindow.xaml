@@ -30,22 +30,37 @@
         <Grid x:Name="bottomPanel" Grid.Row="3" Background="#FF1C1C1C" MouseWheel="Grid_MouseWheel" MouseRightButtonDown="grid_MouseRightButtonDown">
             <Border BorderBrush="Black" BorderThickness="0,0.5,0,0"/>
             <Viewbox>
-                <local:VPButton x:Name="PlayButton" Content="VPButton" Style="{StaticResource ResourceKey=PlayButtonStyle}" Margin="400,14,374,14" MinWidth="18" MinHeight="26" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" HorizontalAlignment="Center" VerticalAlignment="Center" Click="PlayButton_Click" ToolTip="Play media"/>
-            </Viewbox>
-            <Viewbox>
-                <local:VPButton x:Name="PauseButton" Content="VPButton" Style="{StaticResource ResourceKey=PauseButtonStyle}" Margin="400,8,374,14" MinWidth="18" MinHeight="32" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Click="PauseButton_Click" ToolTip="Pause media"/>
-            </Viewbox>
-            <Viewbox>
-                <local:VPButton x:Name="PreviousButton" Content="VPButton" Style="{StaticResource ResourceKey=PreviousNextButtonStyle}" Margin="400,9,497,14" MinWidth="18" MinHeight="32" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Center" VerticalAlignment="Center" Click="PreviousButton_Click" ToolTip="Play previous media" IsEnabled="False"/>
-            </Viewbox>
-            <Viewbox>
-                <local:VPButton x:Name="NextButton" Content="VPButton" Style="{StaticResource ResourceKey=PreviousNextButtonStyle}" Margin="497,-7,417,14" MinWidth="18" MinHeight="32" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransform="{StaticResource Rotate180}" Click="NextButton_Click" ToolTip="Play next media" IsEnabled="False"/>
-            </Viewbox>
-            <Viewbox HorizontalAlignment="Left">
-                <TextBlock x:Name="MediaOpenBlock" TextWrapping="NoWrap" Text="Open media" Foreground="{DynamicResource Button.Static.Foreground}" Margin="5,12,800,12" MouseLeftButtonDown="MediaOpenBlock_MouseLeftButtonDown"/>
-            </Viewbox>
-            <Viewbox HorizontalAlignment="Right">
-                <local:ThreeDotButton x:Name="DotButton" Style="{StaticResource ThreeDotsStyle}" Margin="0,8,5,8" Click="ThreeDotButton_Click"/>
+                <Grid Width="{Binding ActualWidth, ElementName=bottomPanel, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=bottomPanel, Mode=OneWay}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.5*"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Viewbox Grid.Column="0" HorizontalAlignment="Left">
+                        <TextBlock x:Name="MediaOpenBlock" TextWrapping="NoWrap" Text="Open media" Foreground="{DynamicResource Button.Static.Foreground}" MouseLeftButtonDown="MediaOpenBlock_MouseLeftButtonDown" Margin="5,10,0,10"/>
+                    </Viewbox>
+                    <Viewbox Grid.Column="1">
+                         <local:VPButton x:Name="PreviousButton" Content="VPButton" Style="{StaticResource ResourceKey=PreviousButtonStyle}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Click="PreviousButton_Click" ToolTip="Play previous media" IsEnabled="False" Width="21" Margin="72,0,0,10"/>
+                    </Viewbox>
+                    <Viewbox Grid.Column="2">
+                         <local:VPButton x:Name="PlayButton" Content="VPButton" Style="{StaticResource ResourceKey=PlayButtonStyle}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="PlayButton_Click" ToolTip="Play media" Margin="36,0,0,5"/>
+                    </Viewbox>
+                    <Viewbox Grid.Column="2">
+                        <local:VPButton x:Name="PauseButton" Content="VPButton" Style="{StaticResource ResourceKey=PauseButtonStyle}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Visibility="Collapsed" Click="PauseButton_Click" ToolTip="Pause media" Margin="5,0,0,10" Width="18"/>
+                    </Viewbox>
+                    <Viewbox Grid.Column="3">
+                        <local:VPButton x:Name="NextButton" Content="VPButton" Style="{StaticResource ResourceKey=NextButtonStyle}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Click="NextButton_Click" ToolTip="Play next media" IsEnabled="False" Width="21" Margin="0,0,60,10"/>
+                    </Viewbox>
+                    <Viewbox Grid.Column="4">
+                        <local:VPButton x:Name="StopButton" Content="VPButton" Style="{StaticResource ResourceKey=StopButtonStyle}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ToolTip="Stop media" Click="StopButton_Click"/>
+                    </Viewbox>
+                    <Viewbox Grid.Column="5" HorizontalAlignment="Right">
+                        <local:ThreeDotButton x:Name="DotButton" Style="{StaticResource ThreeDotsStyle}" Click="ThreeDotButton_Click" Margin="0,5,5,5"/>
+                    </Viewbox>
+                </Grid>
             </Viewbox>
         </Grid>
     </Grid>

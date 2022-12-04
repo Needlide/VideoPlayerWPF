@@ -70,10 +70,38 @@ namespace VideoPlayerWPF
             }
         }
 
+        private void StopButton_Click(object sender, RoutedEventArgs e)
+        {
+            _player.Stop();
+        }
+
         private void MediaOpenBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             OpenMediaWindow openMediaWindow = new OpenMediaWindow(_player);
             openMediaWindow.Show();
+        }
+
+        private void ThreeDotButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (PlaceForItemsMenu.Child != null)
+            {
+                if (PlaceForItemsMenu.Child.IsVisible)
+                    PlaceForItemsMenu.Child.Visibility = Visibility.Collapsed;
+                else
+                    PlaceForItemsMenu.Child.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ItemsMenu menu = new ItemsMenu
+                {
+                    Width = 100,
+                    Height = 120,
+                    Margin = new Thickness(TranslatePoint(default, MainGrid).X, TranslatePoint(default, MainGrid).Y, 0, 0),
+                };
+                menu.IsVisibleChanged += SetParameters;
+
+                PlaceForItemsMenu.Child = menu;
+            }
         }
         #endregion
 
@@ -155,29 +183,6 @@ namespace VideoPlayerWPF
                 NextButton.IsEnabled = true;
         }
 
-        private void ThreeDotButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (PlaceForItemsMenu.Child != null)
-            {
-                if (PlaceForItemsMenu.Child.IsVisible)
-                    PlaceForItemsMenu.Child.Visibility = Visibility.Collapsed;
-                else
-                    PlaceForItemsMenu.Child.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                ItemsMenu menu = new ItemsMenu
-                {
-                    Width = 100,
-                    Height = 120,
-                    Margin = new Thickness(TranslatePoint(default, MainGrid).X, TranslatePoint(default, MainGrid).Y, 0, 0),
-                };
-                menu.IsVisibleChanged += SetParameters;
-
-                PlaceForItemsMenu.Child = menu;
-            }
-        }
-
         private void SetParameters(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (sender is ItemsMenu menu)
@@ -205,5 +210,6 @@ namespace VideoPlayerWPF
         }
 
         #endregion
+
     }
 }

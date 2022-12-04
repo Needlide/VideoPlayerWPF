@@ -48,6 +48,7 @@ namespace VideoPlayerWPF.Controls
         internal void Stop()
         {
             _mediaPlayer.Stop();
+            _mediaPlayer.Close();
         }
 
         internal void HookEvents()
@@ -123,6 +124,10 @@ namespace VideoPlayerWPF.Controls
 
         internal void SetBalance(double balance)
         {
+            if (balance > 1)
+                balance = 1;
+            if(balance < 0)
+                balance = 0;
             _mediaPlayer.Balance = balance;
         }
 

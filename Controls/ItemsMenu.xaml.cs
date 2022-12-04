@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace VideoPlayerWPF.Controls
 {
@@ -23,6 +12,55 @@ namespace VideoPlayerWPF.Controls
         public ItemsMenu()
         {
             InitializeComponent();
+            SpeedRatioBox.MouseWheel += (object sender, MouseWheelEventArgs e) =>
+            {
+                if (e.Delta > 0)
+                {
+                    try
+                    {
+                        int value = Convert.ToInt16(SpeedRatioBox.Text);
+                        value++;
+                        SpeedRatioBox.Text = value.ToString();
+                    }
+                    catch (Exception) { }
+                }
+                else
+                {
+                    try
+                    {
+                        int value = Convert.ToInt16(SpeedRatioBox.Text);
+                        if(value > 0)
+                            value--;
+                        SpeedRatioBox.Text = value.ToString();
+                    }
+                    catch (Exception) { }
+                }
+            };
+            BalanceBox.MouseWheel += (object sender, MouseWheelEventArgs e) =>
+            {
+                if (e.Delta > 0)
+                {
+                    try
+                    {
+                        double value = Convert.ToDouble(BalanceBox.Text);
+                        if(value < 1)
+                        value += .1;
+                        BalanceBox.Text = value.ToString();
+                    }
+                    catch (Exception) { }
+                }
+                else
+                {
+                    try
+                    {
+                        double value = Convert.ToDouble(BalanceBox.Text);
+                        if(value > 0)
+                            value -= .1;
+                        BalanceBox.Text = value.ToString();
+                    }
+                    catch (Exception) { }
+                }
+            };
         }
     }
 }

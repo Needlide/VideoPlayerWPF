@@ -3,12 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:VideoPlayerWPF.Controls">
 
-    <RotateTransform x:Key="Rotate090" CenterX="24" CenterY="24" Angle="090"/>
-    <RotateTransform x:Key="Rotate180" CenterX="24" CenterY="24" Angle="180"/>
-    <RotateTransform x:Key="Rotate270" CenterX="24" CenterY="24" Angle="270"/>
     <StreamGeometry x:Key="GeometryPlay">M 17,14 1,4 1,24 Z</StreamGeometry>
     <StreamGeometry x:Key="GeometryPause">M 0.5,9.8 5,9.8, 5,30.5, 0.5,30.5 Z M 9,9.8 13.5,9.8 13.5,30.5 9,30.5 Z</StreamGeometry>
-    <StreamGeometry x:Key="GeometryPreviousNext">M 1.3,9.8 5,9.8, 5,30.5 1.3,30.5 Z M 5.4,20.16 13,10.75 13,29.6 Z</StreamGeometry>
+    <StreamGeometry x:Key="GeometryPrevious">M 1.3,9.8 5,9.8, 5,30.5 1.3,30.5 Z M 5.4,20.16 13,10.75 13,29.6 Z</StreamGeometry>
+    <StreamGeometry x:Key="GeometryNext">M 5.4,10.75 5.4,29.6 13,20.16 Z M 13,10.75 13,29.6 16.7,29.6 16.7,10.75 Z</StreamGeometry>
+    <StreamGeometry x:Key="GeometryStop">M 1,1 1,12, 12,12, 12,1 Z</StreamGeometry>
     <EllipseGeometry x:Key="GeometryThumb" Center="1,5" RadiusX="6" RadiusY="6"/>
     <Style x:Key="FocusVisualPlayButton">
         <Setter Property="Control.Template">
@@ -134,14 +133,43 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="PreviousNextButtonStyle" TargetType="{x:Type local:VPButton}">
+    <Style x:Key="PreviousButtonStyle" TargetType="{x:Type local:VPButton}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisualPreviousNextButton}"/>
         <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:VPButton}">
-                    <Path Name="Border" Stroke="{TemplateBinding BorderBrush}" Fill="{TemplateBinding Background}" Data="{StaticResource GeometryPreviousNext}" Width="48"/>
+                    <Path Name="Border" Stroke="{TemplateBinding BorderBrush}" Fill="{TemplateBinding Background}" Data="{StaticResource GeometryPrevious}" Width="48"/>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefaulted" Value="True">
+                            <Setter Property="Stroke" TargetName="Border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Fill" TargetName="Border" Value="{StaticResource Button.MouseOver.Background}"/>
+                            <Setter Property="Stroke" TargetName="Border" Value="{StaticResource Button.MouseOver.Border}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Fill" TargetName="Border" Value="{StaticResource Button.Pressed.Background}"/>
+                            <Setter Property="Stroke" TargetName="Border" Value="{StaticResource Button.Pressed.Border}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Fill" TargetName="Border" Value="{StaticResource Button.Disabled.Background}"/>
+                            <Setter Property="Stroke" TargetName="Border" Value="{StaticResource Button.Disabled.Border}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="NextButtonStyle" TargetType="{x:Type local:VPButton}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisualPreviousNextButton}"/>
+        <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:VPButton}">
+                    <Path Name="Border" Stroke="{TemplateBinding BorderBrush}" Fill="{TemplateBinding Background}" Data="{StaticResource GeometryNext}" Width="48"/>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsDefaulted" Value="True">
                             <Setter Property="Stroke" TargetName="Border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
@@ -288,6 +316,34 @@
                             <Setter TargetName="FirstDot" Property="Fill" Value="{StaticResource Dot.MouseOver.Fill}"/>
                             <Setter TargetName="SecondDot" Property="Fill" Value="{StaticResource Dot.MouseOver.Fill}"/>
                             <Setter TargetName="ThirdDot" Property="Fill" Value="{StaticResource Dot.MouseOver.Fill}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="StopButtonStyle" TargetType="{x:Type local:VPButton}">
+        <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:VPButton}">
+                    <Path Name="Border" Stroke="{TemplateBinding BorderBrush}" Fill="{TemplateBinding Background}" Data="{StaticResource GeometryStop}" Width="48"/>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsDefaulted" Value="True">
+                            <Setter TargetName="Border" Property="Stroke" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Fill" Value="{StaticResource Button.MouseOver.Background}"/>
+                            <Setter TargetName="Border" Property="Stroke" Value="{StaticResource Button.MouseOver.Border}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Fill" TargetName="Border" Value="{StaticResource Button.Pressed.Background}"/>
+                            <Setter Property="Stroke" TargetName="Border" Value="{StaticResource Button.Pressed.Border}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Fill" TargetName="Border" Value="{StaticResource Button.Disabled.Background}"/>
+                            <Setter Property="Stroke" TargetName="Border" Value="{StaticResource Button.Disabled.Border}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
