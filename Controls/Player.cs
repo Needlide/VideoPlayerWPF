@@ -10,11 +10,13 @@ namespace VideoPlayerWPF.Controls
         #region Dependency properties
         static readonly DependencyProperty _sourceProperty = DependencyProperty.RegisterAttached("Source", typeof(Uri), typeof(Player));
         static readonly DependencyProperty _isPlayingProperty = DependencyProperty.RegisterAttached("IsPlaying", typeof(bool), typeof(Player));
+        static readonly DependencyProperty _autoplay = DependencyProperty.RegisterAttached("Autoplay", typeof(bool), typeof(Player));
         #endregion
 
         #region Properties
         internal Uri Source { get => (Uri)GetValue(_sourceProperty); set => SetValue(_sourceProperty, value); }
         internal bool IsPlaying { get => (bool)GetValue(_isPlayingProperty); set => SetValue(_isPlayingProperty, value); }
+        internal bool Autoplay { get => (bool)GetValue(_autoplay); set => SetValue(_autoplay, value); }
         #endregion
 
         #region Events
@@ -34,13 +36,18 @@ namespace VideoPlayerWPF.Controls
         internal void Play()
         {
             IsPlaying = true;
-            _mediaPlayer.Play(); 
+            _mediaPlayer.Play();
         }
 
         internal void Pause()
         {
             IsPlaying = false;
             _mediaPlayer.Pause(); 
+        }
+
+        internal void Stop()
+        {
+            _mediaPlayer.Stop();
         }
 
         internal void HookEvents()
@@ -57,6 +64,8 @@ namespace VideoPlayerWPF.Controls
             {
                 _mediaPlayer.Close();
                 _mediaPlayer.Open(Source);
+                if(Autoplay)
+                    _mediaPlayer.Play();
             }
             catch (ArgumentException)
             {
@@ -105,6 +114,21 @@ namespace VideoPlayerWPF.Controls
         internal double GetPosition()
         {
             return _mediaPlayer.Position.TotalSeconds;
+        }
+
+        internal void SetSpeedRatio(double speedRatio)
+        {
+            _mediaPlayer.SpeedRatio = speedRatio;
+        }
+
+        internal void SetBalance(double balance)
+        {
+            _mediaPlayer.Balance = balance;
+        }
+
+        internal void SetIsMuted(bool? isMuted)
+        {
+            _mediaPlayer.IsMuted = (bool)isMuted;
         }
 
         protected override void OnRender(DrawingContext drawingContext)

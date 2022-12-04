@@ -73,6 +73,9 @@
     <SolidColorBrush x:Key="Slider.Static.Background" Color="#FF292929"/>
     <SolidColorBrush x:Key="Slider.Border" Color="Transparent"/>
     <SolidColorBrush x:Key="Slider.MouseOver.Background" Color="White"/>
+    <SolidColorBrush x:Key="Dot.Static.Fill" Color="#FF808080"/>
+    <SolidColorBrush x:Key="Dot.Stroke" Color="Transparent"/>
+    <SolidColorBrush x:Key="Dot.MouseOver.Fill" Color="#FFFFFF"/>
     <Style x:Key="PlayButtonStyle" TargetType="{x:Type local:VPButton}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisualPlayButton}"/>
         <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
@@ -254,6 +257,37 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="{StaticResource Slider.MouseOver.Background}"/>
                             <Setter TargetName="TrackThumb" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ThreeDotsStyle" TargetType="{x:Type local:ThreeDotButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:ThreeDotButton}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Viewbox Grid.Row="0">
+                            <Ellipse Name="FirstDot" Width="3" Height="3" Fill="{StaticResource Dot.Static.Fill}" Stroke="{StaticResource Dot.Stroke}"/>
+                        </Viewbox>
+                        <Viewbox Grid.Row="1">
+                            <Ellipse Name="SecondDot" Width="3" Height="3" Fill="{StaticResource Dot.Static.Fill}" Stroke="{StaticResource Dot.Stroke}"/>
+                        </Viewbox>
+                        <Viewbox Grid.Row="2">
+                            <Ellipse Name="ThirdDot" Width="3" Height="3" Fill="{StaticResource Dot.Static.Fill}" Stroke="{StaticResource Dot.Stroke}"/>
+                        </Viewbox>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="FirstDot" Property="Fill" Value="{StaticResource Dot.MouseOver.Fill}"/>
+                            <Setter TargetName="SecondDot" Property="Fill" Value="{StaticResource Dot.MouseOver.Fill}"/>
+                            <Setter TargetName="ThirdDot" Property="Fill" Value="{StaticResource Dot.MouseOver.Fill}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

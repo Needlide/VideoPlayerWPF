@@ -57,8 +57,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\ItemsMenu.xaml.cs">
+      <DependentUpon>ItemsMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ThreeDotButton.cs" />
     <Compile Include="Controls\VPSlider.cs" />
     <Compile Include="SourceController.cs" />
+    <Page Include="Controls\ItemsMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

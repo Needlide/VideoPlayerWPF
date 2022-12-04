@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using VideoPlayerWPF.Controls;
 
 namespace VideoPlayerWPF
 {
@@ -122,17 +124,20 @@ namespace VideoPlayerWPF
 
         private void grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!_player.IsPlaying)
+            if (_player.Source != null)
             {
-                _player.Play();
-                PlayButton.Visibility = Visibility.Collapsed;
-                PauseButton.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                _player.Pause();
-                PauseButton.Visibility = Visibility.Collapsed;
-                PlayButton.Visibility = Visibility.Visible;
+                if (!_player.IsPlaying)
+                {
+                    _player.Play();
+                    PlayButton.Visibility = Visibility.Collapsed;
+                    PauseButton.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    _player.Pause();
+                    PauseButton.Visibility = Visibility.Collapsed;
+                    PlayButton.Visibility = Visibility.Visible;
+                }
             }
         }
 
@@ -144,12 +149,61 @@ namespace VideoPlayerWPF
                 _player._mediaPlayer.IsMuted = true;
         }
 
-        #endregion
-
         private void EnableNextButton()
         {
             if (_player.SourceController.Count > 1)
                 NextButton.IsEnabled = true;
         }
+
+        private void ThreeDotButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (PlaceForItemsMenu.Child != null)
+            {
+                if (PlaceForItemsMenu.Child.IsVisible)
+                    PlaceForItemsMenu.Child.Visibility = Visibility.Collapsed;
+                else
+                    PlaceForItemsMenu.Child.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ItemsMenu menu = new ItemsMenu
+                {
+                    Width = 100,
+                    Height = 120,
+                    Margin = new Thickness(TranslatePoint(default, MainGrid).X, TranslatePoint(default, MainGrid).Y, 0, 0),
+                };
+                menu.IsVisibleChanged += SetParameters;
+
+                PlaceForItemsMenu.Child = menu;
+            }
+        }
+
+        private void SetParameters(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is ItemsMenu menu)
+            {
+                StackPanel panel = menu.Content as StackPanel;
+                CheckBox muteCheckBox = panel.Children[0] as CheckBox;
+                _player.SetIsMuted(muteCheckBox.IsChecked);
+                CheckBox autoplayCheckBox = panel.Children[1] as CheckBox;
+                _player.Autoplay = (bool)autoplayCheckBox.IsChecked;
+                Grid firstGrid = panel.Children[2] as Grid;
+                TextBox speedRatioBox = firstGrid.Children[0] as TextBox;
+                try
+                {
+                    _player.SetSpeedRatio(Convert.ToInt16(speedRatioBox.Text));
+                }
+                catch (Exception) { }
+                Grid secondGrid = panel.Children[3] as Grid;
+                TextBox balanceBox = secondGrid.Children[0] as TextBox;
+                try
+                {
+                    _player.SetBalance(Convert.ToDouble(balanceBox.Text));
+                }
+                catch (Exception) { }
+            }
+        }
+
+        #endregion
     }
 }
