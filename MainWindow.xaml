@@ -41,7 +41,7 @@
             <Viewbox>
                 <local:VPButton x:Name="NextButton" Content="VPButton" Style="{StaticResource ResourceKey=PreviousNextButtonStyle}" Margin="497,-7,417,14" MinWidth="18" MinHeight="32" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransform="{StaticResource Rotate180}" Click="NextButton_Click" ToolTip="Play next media" IsEnabled="False"/>
             </Viewbox>
-            <Viewbox>
+            <Viewbox HorizontalAlignment="Left">
                 <TextBlock x:Name="MediaOpenBlock" TextWrapping="NoWrap" Text="Open media" Foreground="{DynamicResource Button.Static.Foreground}" Margin="5,12,800,12" MouseLeftButtonDown="MediaOpenBlock_MouseLeftButtonDown"/>
             </Viewbox>
             <Viewbox HorizontalAlignment="Right">
