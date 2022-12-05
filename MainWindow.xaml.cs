@@ -113,6 +113,8 @@ namespace VideoPlayerWPF
             timer.Start();
             PauseButton.Visibility = Visibility.Collapsed;
             PlayButton.Visibility = Visibility.Visible;
+
+            WindowState = WindowState.Maximized;
         }
         #endregion
 
