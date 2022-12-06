@@ -181,7 +181,6 @@ namespace VideoPlayerWPF.Controls
 
         protected override void OnRender(DrawingContext drawingContext)
         {
-            //drawingContext.DrawVideo(_mediaPlayer, new Rect(default, RenderSize));
             drawingContext.DrawVideo(_mediaPlayer, new Rect(default, RenderSize));
         }
 
@@ -221,7 +220,7 @@ namespace VideoPlayerWPF.Controls
                             }
                     }
                 }
-
+                
                 switch (stretchDirection)
                 {
                     case StretchDirection.UpOnly:

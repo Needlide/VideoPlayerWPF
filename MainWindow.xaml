@@ -18,9 +18,9 @@
             <RowDefinition Height="0.1*"/>
         </Grid.RowDefinitions>
         <Grid x:Name="grid" Grid.Row="0" Grid.RowSpan="2" MouseWheel="Grid_MouseWheel" MouseLeftButtonDown="grid_MouseLeftButtonDown" MouseRightButtonDown="grid_MouseRightButtonDown" Panel.ZIndex="1">
-            <Viewbox x:Name="viewbox" Width="{Binding ActualWidth, ElementName=Window, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}">
+            <!--<Viewbox x:Name="viewbox" Width="{Binding ActualWidth, ElementName=Window, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}">-->
                 <local:Player x:Name="_player" Initialized="_player_Initialized" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}" Foreground="{x:Null}"/>
-            </Viewbox>
+            <!--</Viewbox>-->
         </Grid>
         <Viewbox Grid.Row="1" x:Name="PlaceForItemsMenu" HorizontalAlignment="Right"/>
         <Grid x:Name="sliderGrid" Grid.Row="2">

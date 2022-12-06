@@ -116,8 +116,8 @@ namespace VideoPlayerWPF
             PauseButton.Visibility = Visibility.Collapsed;
             PlayButton.Visibility = Visibility.Visible;
 
-            _player.Height = ActualHeight - (sliderGrid.ActualHeight + bottomPanel.ActualHeight);
-            _player.Width = ActualWidth;
+            _player.RenderSize = new Size(ActualWidth, (ActualHeight - (sliderGrid.ActualHeight + bottomPanel.ActualHeight)));
+            WindowState = WindowState.Maximized;
         }
         #endregion
 
