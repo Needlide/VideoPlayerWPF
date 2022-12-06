@@ -54,7 +54,7 @@ namespace VideoPlayerWPF.Controls
                     try
                     {
                         double value = Convert.ToDouble(BalanceBox.Text);
-                        if(value > 0)
+                        if(value > -1)
                             value -= .1;
                         BalanceBox.Text = value.ToString();
                     }

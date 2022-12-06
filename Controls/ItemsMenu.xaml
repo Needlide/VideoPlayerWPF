@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="0.3*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="BalanceBox" Grid.Column="0" Width="22" Height="18" Text="0.5" MaxLines="1" IsUndoEnabled="False"/>
+            <TextBox x:Name="BalanceBox" Grid.Column="0" Width="22" Height="18" Text="0.0" MaxLines="1" IsUndoEnabled="False"/>
             <Label Grid.Column="1" Content="Balance" Foreground="#FFE4E4E4"/>
         </Grid>
     </StackPanel>

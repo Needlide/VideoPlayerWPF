@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VideoPlayerWPF.Controls"
         mc:Ignorable="d"
+        x:Name="Window"
         Title="Player"
-        Height="537" Width="642"
+        Height="800" Width="800"
         Background="#FF202020"
         MinHeight="537" MinWidth="642" Icon="/StaticResources/icons8-laptop-play-video-96.png" KeyDown="Window_KeyDown">
     <Grid x:Name="MainGrid">
@@ -16,15 +17,16 @@
             <RowDefinition Height="0.015*"/>
             <RowDefinition Height="0.1*"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="grid" Grid.Row="0" Grid.RowSpan="2" MouseWheel="Grid_MouseWheel" MouseLeftButtonDown="grid_MouseLeftButtonDown" MouseRightButtonDown="grid_MouseRightButtonDown">
-            <Viewbox x:Name="viewbox" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}">
-                <local:Player x:Name="_player" Initialized="_player_Initialized" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}" Foreground="{x:Null}" SnapsToDevicePixels="True"/>
+        <Grid x:Name="grid" Grid.Row="0" Grid.RowSpan="2" MouseWheel="Grid_MouseWheel" MouseLeftButtonDown="grid_MouseLeftButtonDown" MouseRightButtonDown="grid_MouseRightButtonDown" Panel.ZIndex="1">
+            <Viewbox x:Name="viewbox" Width="{Binding ActualWidth, ElementName=Window, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}">
+                <local:Player x:Name="_player" Initialized="_player_Initialized" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}" Foreground="{x:Null}"/>
             </Viewbox>
         </Grid>
         <Viewbox Grid.Row="1" x:Name="PlaceForItemsMenu" HorizontalAlignment="Right"/>
         <Grid x:Name="sliderGrid" Grid.Row="2">
+            <Border BorderBrush="Black" BorderThickness="0,0.5,0,0"/>
             <Viewbox x:Name="sliderViewbox">
-                <local:VPSlider x:Name="durationSlider" Width="{Binding ActualWidth, ElementName=sliderGrid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=sliderGrid, Mode=OneWay}" Style="{StaticResource SliderStyle}" Thumb.DragStarted="durationSlider_DragStarted" Thumb.DragCompleted="durationSlider_DragCompleted" LargeChange="0.1" TickFrequency="0.1"/>
+                <local:VPSlider x:Name="durationSlider" Width="{Binding ActualWidth, ElementName=sliderGrid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=sliderGrid, Mode=OneWay}" Style="{StaticResource SliderStyle}" Thumb.DragStarted="durationSlider_DragStarted" Thumb.DragCompleted="durationSlider_DragCompleted" LargeChange="0.1" TickFrequency="0.1" Maximum="0"/>
             </Viewbox>
         </Grid>
         <Grid x:Name="bottomPanel" Grid.Row="3" Background="#FF1C1C1C" MouseWheel="Grid_MouseWheel" MouseRightButtonDown="grid_MouseRightButtonDown">

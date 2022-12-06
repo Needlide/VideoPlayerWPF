@@ -35,8 +35,8 @@ namespace VideoPlayerWPF.Controls
             _autoplayProperty = DependencyProperty.Register("Autoplay", typeof(bool), typeof(Player), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.None));
             _stretchProperty = Viewbox.StretchProperty.AddOwner(typeof(Player));
             _stretchDirectionProperty = Viewbox.StretchDirectionProperty.AddOwner(typeof(Player));
-            _volumeProperty = DependencyProperty.Register("Volume", typeof(double), typeof(Player));
-            _balanceProperty = DependencyProperty.Register("Balance", typeof(double), typeof(Player));
+            _volumeProperty = DependencyProperty.Register("Volume", typeof(double), typeof(Player), new FrameworkPropertyMetadata(0.5, FrameworkPropertyMetadataOptions.None));
+            _balanceProperty = DependencyProperty.Register("Balance", typeof(double), typeof(Player), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.None));
             _stretchProperty.OverrideMetadata(typeof(Player), new FrameworkPropertyMetadata(Stretch.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
             _stretchDirectionProperty.OverrideMetadata(typeof(Player), new FrameworkPropertyMetadata(StretchDirection.Both, FrameworkPropertyMetadataOptions.AffectsMeasure));
         }
@@ -181,6 +181,7 @@ namespace VideoPlayerWPF.Controls
 
         protected override void OnRender(DrawingContext drawingContext)
         {
+            //drawingContext.DrawVideo(_mediaPlayer, new Rect(default, RenderSize));
             drawingContext.DrawVideo(_mediaPlayer, new Rect(default, RenderSize));
         }
 
@@ -208,14 +209,14 @@ namespace VideoPlayerWPF.Controls
                     {
                         case Stretch.Uniform:
                             {
-                                double num4 = ((num < num2) ? num : num2);
-                                num = (num2 = num4);
+                                double num4 = (num < num2) ? num : num2;
+                                num = num2 = num4;
                                 break;
                             }
                         case Stretch.UniformToFill:
                             {
-                                double num3 = ((num > num2) ? num : num2);
-                                num = (num2 = num3);
+                                double num3 = (num > num2) ? num : num2;
+                                num = num2 = num3;
                                 break;
                             }
                     }

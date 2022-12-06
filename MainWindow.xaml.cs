@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using VideoPlayerWPF.Controls;
 
@@ -73,6 +74,7 @@ namespace VideoPlayerWPF
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
             _player.Stop();
+            durationSlider.Value = 0;
         }
 
         private void MediaOpenBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -114,8 +116,8 @@ namespace VideoPlayerWPF
             PauseButton.Visibility = Visibility.Collapsed;
             PlayButton.Visibility = Visibility.Visible;
 
+            _player.Height = ActualHeight - (sliderGrid.ActualHeight + bottomPanel.ActualHeight);
             _player.Width = ActualWidth;
-            _player.Height = viewbox.ActualHeight;
         }
         #endregion
 
@@ -218,9 +220,10 @@ namespace VideoPlayerWPF
             {
                 WindowState = WindowState.Maximized;
                 WindowStyle = WindowStyle.None;
-                bottomPanel.Visibility = Visibility.Hidden;
-                sliderGrid.Visibility = Visibility.Hidden;
-                Grid.SetRowSpan(grid, 4);
+                bottomPanel.Visibility = Visibility.Collapsed;
+                sliderGrid.Visibility = Visibility.Collapsed;
+                _player.Visibility = Visibility.Collapsed;
+                Background = _player.Background;
             }
             if(e.Key == Key.Escape)
             {
@@ -228,7 +231,8 @@ namespace VideoPlayerWPF
                 WindowStyle = WindowStyle.SingleBorderWindow;
                 bottomPanel.Visibility = Visibility.Visible;
                 sliderGrid.Visibility = Visibility.Visible;
-                Grid.SetRowSpan(grid, 2);
+                _player.Visibility = Visibility.Visible;
+                Background = new SolidColorBrush(Color.FromRgb(32, 32, 32));
             }
             if(e.Key == Key.Space)
             {
@@ -237,38 +241,18 @@ namespace VideoPlayerWPF
                     if (_player.IsPlaying)
                     {
                         _player.Pause();
-                        PauseButton.Visibility = Visibility.Hidden;
+                        PauseButton.Visibility = Visibility.Collapsed;
                         PlayButton.Visibility = Visibility.Visible;
                     }
                     else
                     {
                         _player.Play();
-                        PlayButton.Visibility = Visibility.Hidden;
+                        PlayButton.Visibility = Visibility.Collapsed;
                         PauseButton.Visibility = Visibility.Visible;
                     }
                 }
             }
         }
         #endregion
-
-        private void TriggerGrid_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (WindowStyle == WindowStyle.None)
-            {
-                Grid.SetRowSpan(grid, 2);
-                sliderGrid.Visibility = Visibility.Visible;
-                bottomPanel.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void TriggerGrid_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (WindowStyle == WindowStyle.None)
-            {
-                sliderGrid.Visibility = Visibility.Hidden;
-                bottomPanel.Visibility = Visibility.Hidden;
-                Grid.SetRowSpan(grid, 4);
-            }
-        }
     }
 }
