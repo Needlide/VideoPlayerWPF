@@ -8,7 +8,7 @@
         Title="Player"
         Height="537" Width="642"
         Background="#FF202020"
-        MinHeight="537" MinWidth="642" Icon="/StaticResources/icons8-laptop-play-video-96.png">
+        MinHeight="537" MinWidth="642" Icon="/StaticResources/icons8-laptop-play-video-96.png" KeyDown="Window_KeyDown">
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -43,10 +43,10 @@
                         <TextBlock x:Name="MediaOpenBlock" TextWrapping="NoWrap" Text="Open media" Foreground="{DynamicResource Button.Static.Foreground}" MouseLeftButtonDown="MediaOpenBlock_MouseLeftButtonDown" Margin="5,10,0,10"/>
                     </Viewbox>
                     <Viewbox Grid.Column="1">
-                         <local:VPButton x:Name="PreviousButton" Content="VPButton" Style="{StaticResource ResourceKey=PreviousButtonStyle}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Click="PreviousButton_Click" ToolTip="Play previous media" IsEnabled="False" Width="21" Margin="72,0,0,10"/>
+                        <local:VPButton x:Name="PreviousButton" Content="VPButton" Style="{StaticResource ResourceKey=PreviousButtonStyle}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Click="PreviousButton_Click" ToolTip="Play previous media" IsEnabled="False" Width="21" Margin="72,0,0,10"/>
                     </Viewbox>
                     <Viewbox Grid.Column="2">
-                         <local:VPButton x:Name="PlayButton" Content="VPButton" Style="{StaticResource ResourceKey=PlayButtonStyle}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="PlayButton_Click" ToolTip="Play media" Margin="36,0,0,5"/>
+                        <local:VPButton x:Name="PlayButton" Content="VPButton" Style="{StaticResource ResourceKey=PlayButtonStyle}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="PlayButton_Click" ToolTip="Play media" Margin="36,0,0,5"/>
                     </Viewbox>
                     <Viewbox Grid.Column="2">
                         <local:VPButton x:Name="PauseButton" Content="VPButton" Style="{StaticResource ResourceKey=PauseButtonStyle}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Visibility="Collapsed" Click="PauseButton_Click" ToolTip="Pause media" Margin="5,0,0,10" Width="18"/>

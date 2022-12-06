@@ -13,7 +13,7 @@ namespace VideoPlayerWPF
     public partial class MainWindow : Window
     {
         #region Fields
-        DispatcherTimer timer = new DispatcherTimer();
+        readonly DispatcherTimer timer = new DispatcherTimer();
         #endregion
 
         #region Constructor
@@ -114,7 +114,8 @@ namespace VideoPlayerWPF
             PauseButton.Visibility = Visibility.Collapsed;
             PlayButton.Visibility = Visibility.Visible;
 
-            WindowState = WindowState.Maximized;
+            _player.Width = ActualWidth;
+            _player.Height = viewbox.ActualHeight;
         }
         #endregion
 
@@ -211,7 +212,63 @@ namespace VideoPlayerWPF
             }
         }
 
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.F11)
+            {
+                WindowState = WindowState.Maximized;
+                WindowStyle = WindowStyle.None;
+                bottomPanel.Visibility = Visibility.Hidden;
+                sliderGrid.Visibility = Visibility.Hidden;
+                Grid.SetRowSpan(grid, 4);
+            }
+            if(e.Key == Key.Escape)
+            {
+                WindowState = WindowState.Normal;
+                WindowStyle = WindowStyle.SingleBorderWindow;
+                bottomPanel.Visibility = Visibility.Visible;
+                sliderGrid.Visibility = Visibility.Visible;
+                Grid.SetRowSpan(grid, 2);
+            }
+            if(e.Key == Key.Space)
+            {
+                if(_player.Source != null)
+                {
+                    if (_player.IsPlaying)
+                    {
+                        _player.Pause();
+                        PauseButton.Visibility = Visibility.Hidden;
+                        PlayButton.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        _player.Play();
+                        PlayButton.Visibility = Visibility.Hidden;
+                        PauseButton.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+        }
         #endregion
 
+        private void TriggerGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (WindowStyle == WindowStyle.None)
+            {
+                Grid.SetRowSpan(grid, 2);
+                sliderGrid.Visibility = Visibility.Visible;
+                bottomPanel.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void TriggerGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (WindowStyle == WindowStyle.None)
+            {
+                sliderGrid.Visibility = Visibility.Hidden;
+                bottomPanel.Visibility = Visibility.Hidden;
+                Grid.SetRowSpan(grid, 4);
+            }
+        }
     }
 }
